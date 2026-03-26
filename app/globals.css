@@ -24,7 +24,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--text-main);
-  font-family: Georgia, "Segoe UI", serif;
+  font-family: Arial, sans-serif;
   background:
     radial-gradient(circle at top, rgba(245, 226, 141, 0.55), transparent 32%),
     linear-gradient(135deg, rgba(32, 69, 25, 0.95), rgba(53, 80, 37, 0.9)),
@@ -39,11 +39,31 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.85) 0 0.25rem, transparent 0.35rem),
-    radial-gradient(circle at 73% 18%, rgba(255, 255, 255, 0.65) 0 0.2rem, transparent 0.3rem),
-    radial-gradient(circle at 10% 55%, rgba(255, 255, 255, 0.55) 0 0.3rem, transparent 0.42rem),
-    radial-gradient(circle at 82% 58%, rgba(255, 255, 255, 0.7) 0 0.25rem, transparent 0.38rem),
-    radial-gradient(circle at 32% 90%, rgba(255, 255, 255, 0.55) 0 0.25rem, transparent 0.38rem);
+    radial-gradient(
+      circle at 20% 15%,
+      rgba(255, 255, 255, 0.85) 0 0.25rem,
+      transparent 0.35rem
+    ),
+    radial-gradient(
+      circle at 73% 18%,
+      rgba(255, 255, 255, 0.65) 0 0.2rem,
+      transparent 0.3rem
+    ),
+    radial-gradient(
+      circle at 10% 55%,
+      rgba(255, 255, 255, 0.55) 0 0.3rem,
+      transparent 0.42rem
+    ),
+    radial-gradient(
+      circle at 82% 58%,
+      rgba(255, 255, 255, 0.7) 0 0.25rem,
+      transparent 0.38rem
+    ),
+    radial-gradient(
+      circle at 32% 90%,
+      rgba(255, 255, 255, 0.55) 0 0.25rem,
+      transparent 0.38rem
+    );
   opacity: 0.8;
 }
 
@@ -66,11 +86,15 @@ textarea {
 
 .glass-panel {
   margin: 0 auto;
-  max-width: 1110px;
+  max-width: 1400px;
   padding: 1.5rem;
   border-radius: 1.35rem;
   border: 1px solid rgba(255, 255, 255, 0.52);
-  background: linear-gradient(180deg, rgba(228, 231, 215, 0.34), rgba(203, 210, 181, 0.28));
+  background: linear-gradient(
+    180deg,
+    rgba(228, 231, 215, 0.34),
+    rgba(203, 210, 181, 0.28)
+  );
   box-shadow: 0 20px 50px rgba(12, 18, 7, 0.28);
   backdrop-filter: blur(16px);
 }
@@ -148,6 +172,14 @@ textarea {
   grid-template-columns: minmax(310px, 0.8fr) minmax(0, 1.15fr);
   gap: 1rem;
   margin-top: 1rem;
+}
+
+.column-card:first-child {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
 }
 
 .column-card {

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  advisoryChecklist,
   climateTypes,
   dictionaries,
   languages,
@@ -41,6 +40,11 @@ export function AgroDashboard() {
   const [messages, setMessages] = useState<Message[]>([initialMessage]);
   const [isPending, setIsPending] = useState(false);
   const [copiedId, setCopiedId] = useState("");
+  const [currentPromptSet, setCurrentPromptSet] = useState(0);
+  const [checklist, setChecklist] = useState<{ id: string; text: string; completed: boolean }[]>([]);
+  const [notes, setNotes] = useState<{ id: string; text: string }[]>([]);
+  const [newTask, setNewTask] = useState("");
+  const [newNote, setNewNote] = useState("");
 
   const labels = dictionaries[language];
 
@@ -56,6 +60,8 @@ export function AgroDashboard() {
         soilType?: string;
         climateType?: string;
         messages?: Message[];
+        checklist?: { id: string; text: string; completed: boolean }[];
+        notes?: { id: string; text: string }[];
       };
 
       if (parsed.language && dictionaries[parsed.language]) {
@@ -70,6 +76,12 @@ export function AgroDashboard() {
       if (parsed.messages?.length) {
         setMessages(parsed.messages);
       }
+      if (parsed.checklist) {
+        setChecklist(parsed.checklist);
+      }
+      if (parsed.notes) {
+        setNotes(parsed.notes);
+      }
     } catch {
       localStorage.removeItem(storageKey);
     }
@@ -78,16 +90,16 @@ export function AgroDashboard() {
   useEffect(() => {
     localStorage.setItem(
       storageKey,
-      JSON.stringify({ language, soilType, climateType, messages })
+      JSON.stringify({ language, soilType, climateType, messages, checklist, notes })
     );
-  }, [language, soilType, climateType, messages]);
+  }, [language, soilType, climateType, messages, checklist, notes]);
 
   useEffect(() => {
     chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const recentReplies = useMemo(
-    () => messages.filter((message) => message.role === "assistant").slice(-3).reverse(),
+  const questionsAsked = useMemo(
+    () => messages.filter((message) => message.role === "user").slice(-5).reverse(),
     [messages]
   );
 
@@ -185,6 +197,43 @@ export function AgroDashboard() {
     window.speechSynthesis.speak(utterance);
   }
 
+  function refreshPrompts() {
+    setCurrentPromptSet(Math.floor(Math.random() * quickPrompts.length));
+  }
+
+  function addTask() {
+    if (!newTask.trim()) return;
+    const task = { id: crypto.randomUUID(), text: newTask.trim(), completed: false };
+    setChecklist([...checklist, task]);
+    setNewTask("");
+  }
+
+  function toggleTask(id: string) {
+    setChecklist(checklist.map(task => task.id === id ? { ...task, completed: !task.completed } : task));
+  }
+
+  function removeTask(id: string) {
+    setChecklist(checklist.filter(task => task.id !== id));
+  }
+
+  function addNote() {
+    if (!newNote.trim()) return;
+    const note = { id: crypto.randomUUID(), text: newNote.trim() };
+    setNotes([...notes, note]);
+    setNewNote("");
+  }
+
+  function removeNote(id: string) {
+    setNotes(notes.filter(note => note.id !== id));
+  }
+
+  function scrollToMessage(id: string) {
+    const element = document.getElementById(`message-${id}`);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
   return (
     <main className="page-shell">
       <section className="glass-panel">
@@ -211,7 +260,7 @@ export function AgroDashboard() {
           <button className="button" type="button" onClick={clearHistory}>
             {labels.clearHistory}
           </button>
-          <Link className="pill-link" href="/market">
+          <Link className="button" href="/market">
             {labels.marketLink}
           </Link>
           <button className="button" type="button" onClick={logout}>
@@ -224,11 +273,14 @@ export function AgroDashboard() {
             <div className="stack">
               <select className="field" value={soilType} onChange={(event) => setSoilType(event.target.value)}>
                 <option value="">{labels.selectSoilType}</option>
-                {soilTypes.map((soil) => (
-                  <option key={soil} value={soil}>
-                    {soil}
-                  </option>
-                ))}
+                <option value="Alluvial Soil">{labels.soilAlluvial}</option>
+                <option value="Black Cotton Soil">{labels.soilBlackCotton}</option>
+                <option value="Red Soil">{labels.soilRed}</option>
+                <option value="Laterite Soil">{labels.soilLaterite}</option>
+                <option value="Sandy Soil">{labels.soilSandy}</option>
+                <option value="Loamy Soil">{labels.soilLoamy}</option>
+                <option value="Clay Soil">{labels.soilClay}</option>
+                <option value="Mountain Soil">{labels.soilMountain}</option>
               </select>
 
               <select
@@ -237,11 +289,14 @@ export function AgroDashboard() {
                 onChange={(event) => setClimateType(event.target.value)}
               >
                 <option value="">{labels.selectClimateType}</option>
-                {climateTypes.map((climate) => (
-                  <option key={climate} value={climate}>
-                    {climate}
-                  </option>
-                ))}
+                <option value="Tropical Wet">{labels.climateTropicalWet}</option>
+                <option value="Tropical Dry">{labels.climateTropicalDry}</option>
+                <option value="Subtropical Humid">{labels.climateSubtropicalHumid}</option>
+                <option value="Temperate">{labels.climateTemperate}</option>
+                <option value="Semi-Arid">{labels.climateSemiArid}</option>
+                <option value="Arid Desert">{labels.climateAridDesert}</option>
+                <option value="Coastal Humid">{labels.climateCoastalHumid}</option>
+                <option value="Highland Cool">{labels.climateHighlandCool}</option>
               </select>
 
               <textarea
@@ -258,9 +313,14 @@ export function AgroDashboard() {
               <p className="tip">{labels.tip}</p>
 
               <div className="insight-card">
-                <h3>{labels.quickPrompts}</h3>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <h3>{labels.quickPrompts}</h3>
+                  <button className="button" type="button" onClick={refreshPrompts} style={{ fontSize: "0.8rem", padding: "0.4rem 0.8rem" }}>
+                    {labels.refresh}
+                  </button>
+                </div>
                 <div className="chip-row">
-                  {quickPrompts.map((prompt) => (
+                  {quickPrompts[currentPromptSet].map((prompt) => (
                     <button
                       key={prompt}
                       className="chip"
@@ -274,40 +334,96 @@ export function AgroDashboard() {
               </div>
 
               <div className="insight-card">
-                <h3>{labels.smartInsights}</h3>
-                <div className="meta-grid">
-                  <div>
-                    <h4>{labels.cropHealth}</h4>
-                    <p className="subtle">
-                      {soilType ? `${soilType} selected.` : "Choose soil type for tailored crop guidance."}
-                    </p>
-                  </div>
-                  <div>
-                    <h4>{labels.weatherBadge}</h4>
-                    <p className="subtle">
-                      {climateType ? `${climateType} selected.` : "Choose climate zone for better recommendations."}
-                    </p>
-                  </div>
-                </div>
+                <button
+                  onClick={() => router.push("/news")}
+                  style={{ border: "none", background: "none", textAlign: "left", cursor: "pointer", width: "100%" }}
+                >
+                  <h3>{labels.dailyNews}</h3>
+                  <p className="subtle">Click to view daily agriculture news</p>
+                </button>
               </div>
 
               <div className="insight-card">
-                <h3>{labels.farmChecklist}</h3>
-                {advisoryChecklist.map((item) => (
-                  <p key={item} className="subtle">
-                    • {item}
-                  </p>
+                <h3>{labels.checklist}</h3>
+                <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                  <input
+                    className="field"
+                    value={newTask}
+                    placeholder={labels.addTask}
+                    onChange={(e) => setNewTask(e.target.value)}
+                    style={{ flex: 1 }}
+                  />
+                  <button className="button" onClick={addTask} style={{ padding: "0.5rem" }}>+</button>
+                </div>
+                {checklist.map((task) => (
+                  <div key={task.id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
+                    <input
+                      type="checkbox"
+                      checked={task.completed}
+                      onChange={() => toggleTask(task.id)}
+                    />
+                    <span style={{ textDecoration: task.completed ? "line-through" : "none", flex: 1 }}>
+                      {task.text}
+                    </span>
+                    <button className="button" onClick={() => removeTask(task.id)} style={{ padding: "0.2rem 0.5rem", fontSize: "0.8rem" }}>
+                      {labels.delete}
+                    </button>
+                  </div>
                 ))}
               </div>
 
               <div className="insight-card">
-                <h3>{labels.recentReplies}</h3>
-                {recentReplies.map((message) => (
-                  <p key={message.id} className="subtle">
+                <h3>{labels.notes}</h3>
+                <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                  <input
+                    className="field"
+                    value={newNote}
+                    placeholder={labels.addNote}
+                    onChange={(e) => setNewNote(e.target.value)}
+                    style={{ flex: 1 }}
+                  />
+                  <button className="button" onClick={addNote} style={{ padding: "0.5rem" }}>+</button>
+                </div>
+                {notes.map((note) => (
+                  <div key={note.id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
+                    <span style={{ flex: 1 }}>{note.text}</span>
+                    <button className="button" onClick={() => removeNote(note.id)} style={{ padding: "0.2rem 0.5rem", fontSize: "0.8rem" }}>
+                      {labels.delete}
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div className="insight-card">
+                <h3>{labels.questionsAsked}</h3>
+                {questionsAsked.map((message) => (
+                  <p
+                    key={message.id}
+                    className="subtle"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => scrollToMessage(message.id)}
+                  >
                     {message.content.slice(0, 110)}
                     {message.content.length > 110 ? "..." : ""}
                   </p>
                 ))}
+              </div>
+
+              <div className="insight-card">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <h3>{labels.stockPrices}</h3>
+                  <button className="button" type="button" style={{ fontSize: "0.8rem", padding: "0.4rem 0.8rem" }}>
+                    {labels.refresh}
+                  </button>
+                </div>
+                <div style={{ display: "grid", gap: "0.5rem" }}>
+                  <div>Fertilisers and Agrochemicals: ₹{Math.floor(Math.random() * 1000) + 500}</div>
+                  <div>Seeds: ₹{Math.floor(Math.random() * 800) + 300}</div>
+                  <div>Agricultural Machinery: ₹{Math.floor(Math.random() * 1500) + 1000}</div>
+                  <div>Food Processing: ₹{Math.floor(Math.random() * 1200) + 700}</div>
+                  <div>Plantations: ₹{Math.floor(Math.random() * 900) + 400}</div>
+                  <div>Edible Oils: ₹{Math.floor(Math.random() * 600) + 200}</div>
+                </div>
               </div>
             </div>
           </section>
@@ -315,9 +431,9 @@ export function AgroDashboard() {
           <section className="column-card chat-panel">
             <div className="chat-scroll">
               {messages.map((message) => (
-                <article key={message.id} className={`message ${message.role}`}>
+                <article key={message.id} id={`message-${message.id}`} className={`message ${message.role}`}>
                   <p>{message.content}</p>
-                  <time>{formatDateTime(message.createdAt)}</time>
+                  <time suppressHydrationWarning>{formatDateTime(message.createdAt)}</time>
                   {message.role === "assistant" ? (
                     <div className="reply-tools">
                       <button type="button" onClick={() => void copyReply(message)}>
