@@ -7,6 +7,7 @@ const chatSchema = z.object({
   question: z.string().min(2),
   soilType: z.string().optional(),
   climateType: z.string().optional(),
+  language: z.string().optional(),
   messages: z
     .array(
       z.object({

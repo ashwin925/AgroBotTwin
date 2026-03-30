@@ -20,14 +20,6 @@ type Message = {
   createdAt: string;
 };
 
-const initialMessage: Message = {
-  id: "welcome",
-  role: "assistant",
-  content:
-    "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic.",
-  createdAt: new Date().toISOString()
-};
-
 const storageKey = "agroai_chat_state";
 
 export function AgroDashboard() {
@@ -37,20 +29,35 @@ export function AgroDashboard() {
   const [soilType, setSoilType] = useState("");
   const [climateType, setClimateType] = useState("");
   const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState<Message[]>([initialMessage]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isPending, setIsPending] = useState(false);
   const [copiedId, setCopiedId] = useState("");
   const [currentPromptSet, setCurrentPromptSet] = useState(0);
   const [checklist, setChecklist] = useState<{ id: string; text: string; completed: boolean }[]>([]);
-  const [notes, setNotes] = useState<{ id: string; text: string }[]>([]);
   const [newTask, setNewTask] = useState("");
-  const [newNote, setNewNote] = useState("");
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [stockPrices, setStockPrices] = useState({
+    fertilizers: 0,
+    seeds: 0,
+    machinery: 0,
+    foodProcessing: 0,
+    plantations: 0,
+    edibleOils: 0
+  });
 
   const labels = dictionaries[language];
+
+  const initialMessage = useMemo((): Message => ({
+    id: "welcome",
+    role: "assistant",
+    content: labels.welcomeMessage || "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic.",
+    createdAt: new Date().toISOString()
+  }), [labels]);
 
   useEffect(() => {
     const raw = localStorage.getItem(storageKey);
     if (!raw) {
+      setMessages([initialMessage]);
       return;
     }
 
@@ -61,7 +68,6 @@ export function AgroDashboard() {
         climateType?: string;
         messages?: Message[];
         checklist?: { id: string; text: string; completed: boolean }[];
-        notes?: { id: string; text: string }[];
       };
 
       if (parsed.language && dictionaries[parsed.language]) {
@@ -75,12 +81,11 @@ export function AgroDashboard() {
       }
       if (parsed.messages?.length) {
         setMessages(parsed.messages);
+      } else {
+        setMessages([initialMessage]);
       }
       if (parsed.checklist) {
         setChecklist(parsed.checklist);
-      }
-      if (parsed.notes) {
-        setNotes(parsed.notes);
       }
     } catch {
       localStorage.removeItem(storageKey);
@@ -90,13 +95,20 @@ export function AgroDashboard() {
   useEffect(() => {
     localStorage.setItem(
       storageKey,
-      JSON.stringify({ language, soilType, climateType, messages, checklist, notes })
+      JSON.stringify({ language, soilType, climateType, messages, checklist })
     );
-  }, [language, soilType, climateType, messages, checklist, notes]);
+  }, [language, soilType, climateType, messages, checklist]);
 
   useEffect(() => {
-    chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    setStockPrices({
+      fertilizers: Math.floor(Math.random() * 1000) + 500,
+      seeds: Math.floor(Math.random() * 800) + 300,
+      machinery: Math.floor(Math.random() * 1500) + 1000,
+      foodProcessing: Math.floor(Math.random() * 1200) + 700,
+      plantations: Math.floor(Math.random() * 900) + 400,
+      edibleOils: Math.floor(Math.random() * 600) + 200
+    });
+  }, []);
 
   const questionsAsked = useMemo(
     () => messages.filter((message) => message.role === "user").slice(-5).reverse(),
@@ -129,6 +141,7 @@ export function AgroDashboard() {
           question: activeQuestion,
           soilType,
           climateType,
+          language,
           messages: nextMessages.map(({ role, content }) => ({ role, content }))
         })
       });
@@ -191,9 +204,32 @@ export function AgroDashboard() {
     if (!("speechSynthesis" in window)) {
       return;
     }
-    window.speechSynthesis.cancel();
+
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const langMap: Record<LanguageCode, string> = {
+      en: "en-IN",
+      ta: "ta-IN",
+      hi: "hi-IN",
+      bn: "bn-IN",
+      mr: "mr-IN",
+      te: "te-IN",
+      gu: "gu-IN",
+      ur: "ur-IN",
+      kn: "kn-IN",
+      or: "or-IN"
+    };
+
     const utterance = new SpeechSynthesisUtterance(message.content);
-    utterance.lang = "en-IN";
+    utterance.lang = langMap[language] || "en-IN";
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    setIsSpeaking(true);
     window.speechSynthesis.speak(utterance);
   }
 
@@ -214,17 +250,6 @@ export function AgroDashboard() {
 
   function removeTask(id: string) {
     setChecklist(checklist.filter(task => task.id !== id));
-  }
-
-  function addNote() {
-    if (!newNote.trim()) return;
-    const note = { id: crypto.randomUUID(), text: newNote.trim() };
-    setNotes([...notes, note]);
-    setNewNote("");
-  }
-
-  function removeNote(id: string) {
-    setNotes(notes.filter(note => note.id !== id));
   }
 
   function scrollToMessage(id: string) {
@@ -310,8 +335,6 @@ export function AgroDashboard() {
                 {isPending ? "Thinking..." : labels.getAdvice}
               </button>
 
-              <p className="tip">{labels.tip}</p>
-
               <div className="insight-card">
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <h3>{labels.quickPrompts}</h3>
@@ -373,29 +396,15 @@ export function AgroDashboard() {
               </div>
 
               <div className="insight-card">
-                <h3>{labels.notes}</h3>
-                <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                  <input
-                    className="field"
-                    value={newNote}
-                    placeholder={labels.addNote}
-                    onChange={(e) => setNewNote(e.target.value)}
-                    style={{ flex: 1 }}
-                  />
-                  <button className="button" onClick={addNote} style={{ padding: "0.5rem" }}>+</button>
-                </div>
-                {notes.map((note) => (
-                  <div key={note.id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
-                    <span style={{ flex: 1 }}>{note.text}</span>
-                    <button className="button" onClick={() => removeNote(note.id)} style={{ padding: "0.2rem 0.5rem", fontSize: "0.8rem" }}>
-                      {labels.delete}
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              <div className="insight-card">
                 <h3>{labels.questionsAsked}</h3>
+                <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                  <button className="button" onClick={() => setMessages([initialMessage])} style={{ flex: 1 }}>
+                    New Chat
+                  </button>
+                  <button className="button" onClick={() => {/* TODO: show history */ }} style={{ flex: 1 }}>
+                    Chat History
+                  </button>
+                </div>
                 {questionsAsked.map((message) => (
                   <p
                     key={message.id}
@@ -417,12 +426,12 @@ export function AgroDashboard() {
                   </button>
                 </div>
                 <div style={{ display: "grid", gap: "0.5rem" }}>
-                  <div>Fertilisers and Agrochemicals: ₹{Math.floor(Math.random() * 1000) + 500}</div>
-                  <div>Seeds: ₹{Math.floor(Math.random() * 800) + 300}</div>
-                  <div>Agricultural Machinery: ₹{Math.floor(Math.random() * 1500) + 1000}</div>
-                  <div>Food Processing: ₹{Math.floor(Math.random() * 1200) + 700}</div>
-                  <div>Plantations: ₹{Math.floor(Math.random() * 900) + 400}</div>
-                  <div>Edible Oils: ₹{Math.floor(Math.random() * 600) + 200}</div>
+                  <div>Fertilisers and Agrochemicals: ₹{stockPrices.fertilizers}</div>
+                  <div>Seeds: ₹{stockPrices.seeds}</div>
+                  <div>Agricultural Machinery: ₹{stockPrices.machinery}</div>
+                  <div>Food Processing: ₹{stockPrices.foodProcessing}</div>
+                  <div>Plantations: ₹{stockPrices.plantations}</div>
+                  <div>Edible Oils: ₹{stockPrices.edibleOils}</div>
                 </div>
               </div>
             </div>
@@ -440,7 +449,7 @@ export function AgroDashboard() {
                         {copiedId === message.id ? "Copied" : labels.copyReply}
                       </button>
                       <button type="button" onClick={() => speakReply(message)}>
-                        {labels.speakReply}
+                        {isSpeaking ? "Stop Speaking" : labels.speakReply}
                       </button>
                     </div>
                   ) : null}

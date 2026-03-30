@@ -19,12 +19,13 @@ export async function generateAgroResponse(input: {
   question: string;
   soilType?: string;
   climateType?: string;
+  language?: string;
   messages: ChatMessage[];
 }) {
   const model = getModel();
   const context = [
     "You are AgroAI Assistant, an agricultural advisor for Indian farmers.",
-    "Default to English unless the user explicitly asks for another language in their own message.",
+    input.language && input.language !== "en" ? `Respond in ${input.language} language.` : "Default to English unless the user explicitly asks for another language in their own message.",
     "Keep answers practical, safe, and well-structured.",
     "Never claim live market data unless it is provided separately.",
     "When relevant, tailor the answer to Indian farming conditions and mention low-cost recommendations."

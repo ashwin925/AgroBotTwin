@@ -70,7 +70,6 @@ export type TranslationDictionary = {
   speakReply: string;
   logout: string;
   checklist: string;
-  notes: string;
   questionsAsked: string;
   dailyNews: string;
   stockPrices: string;
@@ -79,6 +78,7 @@ export type TranslationDictionary = {
   addNote: string;
   delete: string;
   completed: string;
+  welcomeMessage: string;
   soilAlluvial: string;
   soilBlackCotton: string;
   soilRed: string;
@@ -133,7 +133,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "Speak Reply",
     logout: "Logout",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -157,7 +156,8 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "Semi-Arid",
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    climateHighlandCool: "Highland Cool",
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   ta: {
     appTitle: "AgroAI உதவியாளர்",
@@ -194,7 +194,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "பதிலை ஓதி கேட்க",
     logout: "வெளியேறு",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -203,6 +202,7 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     addNote: "Add Note",
     delete: "Delete",
     completed: "Completed",
+    welcomeMessage: "வணக்கம்! நான் AgroAI, உங்கள் நிபுணர் வேளாண்மை உதவியாளர்.\n\nஇன்று உங்களுக்கு எப்படி உதவ முடியும்? பயிர் தேர்வு, மண் மேலாண்மை, பூச்சி கட்டுப்பாடு, விளைச்சல் மேம்பாடு அல்லது வேளாண்மை தொடர்பான வேறு எந்த தலைப்பிலும் என்னை கேளுங்கள்.",
     soilAlluvial: "அல்லுவியல் மண்",
     soilBlackCotton: "கருப்பு பருத்தி மண்",
     soilRed: "சிவப்பு மண்",
@@ -255,7 +255,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "उत्तर सुनें",
     logout: "लॉग आउट",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -264,6 +263,7 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     addNote: "Add Note",
     delete: "Delete",
     completed: "Completed",
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic.",
     soilAlluvial: "Alluvial Soil",
     soilBlackCotton: "Black Cotton Soil",
     soilRed: "Red Soil",
@@ -316,7 +316,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "જવાબ સાંભળો",
     logout: "લોગઆઉટ",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -340,7 +339,8 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "Semi-Arid",
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    climateHighlandCool: "Highland Cool",
+    welcomeMessage: "હેલો! હું AgroAI છું, તમારો નિષ્ણાત કૃષિ સહાયક.\n\nઆજે હું તમને કેવી રીતે મદદ કરી શકું? પાક પસંદગી, માટી વ્યવસ્થાપન, જીવાત નિયંત્રણ, ઉત્પાદન ઑપ્ટિમાઇઝેશન અથવા કૃષિ સંબંધિત કોઈપણ અન્ય વિષયમાં મને પૂછો."
   },
   bn: {
     appTitle: "AgroAI সহায়ক",
@@ -377,7 +377,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "উত্তর শুনুন",
     logout: "লগ আউট",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -401,7 +400,8 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "Semi-Arid",
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    climateHighlandCool: "Highland Cool",
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   mr: {
     appTitle: "AgroAI सहाय्यक",
@@ -438,7 +438,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "उत्तर ऐका",
     logout: "लॉग आउट",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -462,7 +461,8 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "Semi-Arid",
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    climateHighlandCool: "Highland Cool",
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   te: {
     appTitle: "AgroAI సహాయకుడు",
@@ -499,7 +499,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "సమాధానం వినండి",
     logout: "లాగ్ అవుట్",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -523,7 +522,8 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "Semi-Arid",
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    climateHighlandCool: "Highland Cool",
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   ur: {
     appTitle: "AgroAI مددگار",
@@ -560,7 +560,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "جواب سنو",
     logout: "لاگ آؤٹ",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -584,7 +583,8 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "Semi-Arid",
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    climateHighlandCool: "Highland Cool",
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   kn: {
     appTitle: "AgroAI ಸಹಾಯಕ",
@@ -621,7 +621,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "ಉತ್ತರ ಕೇಳಿ",
     logout: "ಲಾಗ್ ಔಟ್",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -645,7 +644,8 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "Semi-Arid",
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    climateHighlandCool: "Highland Cool",
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   or: {
     appTitle: "AgroAI ସହାୟକ",
@@ -682,7 +682,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     speakReply: "ଉତ୍ତର ଶୁଣନ୍ତୁ",
     logout: "ଲଗ୍ ଆଉଟ୍",
     checklist: "Checklist",
-    notes: "Notes",
     questionsAsked: "Questions Asked",
     dailyNews: "Daily News",
     stockPrices: "Stock Prices",
@@ -706,7 +705,8 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "Semi-Arid",
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    climateHighlandCool: "Highland Cool",
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   }
 };
 
