@@ -107,7 +107,7 @@ export function NewsPage({ initialLanguage = "en" }: { initialLanguage?: Languag
               color: "#333"
             }}>
               <h2 style={{ marginTop: 0, color: "#2d5a27", fontSize: "1.5rem" }}>{item.title}</h2>
-              <p style={{ lineHeight: 1.6, fontSize: "1rem", marginBottom: "1rem" }}>
+              <p style={{ lineHeight: 1.6, fontSize: "1rem", marginBottom: "1rem", whiteSpace: "pre-wrap" }}>
                 {expandedNews.has(item.id) ? item.content : item.summary}
               </p>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

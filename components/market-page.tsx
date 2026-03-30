@@ -96,7 +96,6 @@ export function MarketPage({ initialLanguage = "en" }: { initialLanguage?: Langu
               <p>Updated: {formatDateTime(result.updatedAt)}</p>
               <p>Source: {result.source}</p>
             </article>
-            <p className="market-note">{labels.dataNote}</p>
           </>
         ) : null}
       </section>
