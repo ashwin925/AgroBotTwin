@@ -1,23 +1,23 @@
 export const soilTypes = [
-  "Alluvial Soil",
-  "Black Cotton Soil",
-  "Red Soil",
-  "Laterite Soil",
-  "Sandy Soil",
-  "Loamy Soil",
-  "Clay Soil",
-  "Mountain Soil"
+  { id: "alluvial", labelKey: "soilAlluvial" },
+  { id: "blackCotton", labelKey: "soilBlackCotton" },
+  { id: "red", labelKey: "soilRed" },
+  { id: "laterite", labelKey: "soilLaterite" },
+  { id: "sandy", labelKey: "soilSandy" },
+  { id: "loamy", labelKey: "soilLoamy" },
+  { id: "clay", labelKey: "soilClay" },
+  { id: "mountain", labelKey: "soilMountain" }
 ];
 
 export const climateTypes = [
-  "Tropical Wet",
-  "Tropical Dry",
-  "Subtropical Humid",
-  "Temperate",
-  "Semi-Arid",
-  "Arid Desert",
-  "Coastal Humid",
-  "Highland Cool"
+  { id: "tropicalWet", labelKey: "climateTropicalWet" },
+  { id: "tropicalDry", labelKey: "climateTropicalDry" },
+  { id: "subtropicalHumid", labelKey: "climateSubtropicalHumid" },
+  { id: "temperate", labelKey: "climateTemperate" },
+  { id: "semiArid", labelKey: "climateSemiArid" },
+  { id: "aridDesert", labelKey: "climateAridDesert" },
+  { id: "coastalHumid", labelKey: "climateCoastalHumid" },
+  { id: "highlandCool", labelKey: "climateHighlandCool" }
 ];
 
 export const languages = [
@@ -63,7 +63,6 @@ export type TranslationDictionary = {
   back: string;
   searchCrop: string;
   search: string;
-  dataNote: string;
   smartInsights: string;
   weatherBadge: string;
   copyReply: string;
@@ -95,6 +94,14 @@ export type TranslationDictionary = {
   climateAridDesert: string;
   climateCoastalHumid: string;
   climateHighlandCool: string;
+  stockFertilizers: string;
+  stockSeeds: string;
+  stockMachinery: string;
+  stockFoodProcessing: string;
+  stockPlantations: string;
+  stockEdibleOils: string;
+  newChat: string;
+  chatHistory: string;
 };
 
 export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
@@ -126,7 +133,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "Back",
     searchCrop: "Search crop name",
     search: "Search",
-    dataNote: "Prices are fetched from public datasets and may be partial.",
     smartInsights: "Smart Insights",
     weatherBadge: "Field Conditions",
     copyReply: "Copy Reply",
@@ -157,7 +163,15 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
     climateHighlandCool: "Highland Cool",
-    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic.",
+    stockFertilizers: "Fertilisers and Agrochemicals",
+    stockSeeds: "Seeds",
+    stockMachinery: "Agricultural Machinery",
+    stockFoodProcessing: "Food Processing",
+    stockPlantations: "Plantations",
+    stockEdibleOils: "Edible Oils",
+    newChat: "New Chat",
+    chatHistory: "Chat History"
   },
   ta: {
     appTitle: "AgroAI உதவியாளர்",
@@ -187,7 +201,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "பின்",
     searchCrop: "பயிர் பெயரை தேடுங்கள்",
     search: "தேடு",
-    dataNote: "விலைகள் பொது தரவுகளில் இருந்து பெறப்படுகின்றன; சில நேரங்களில் முழுமையற்றதாக இருக்கலாம்.",
     smartInsights: "சிறப்பு அறிவுறுத்தல்கள்",
     weatherBadge: "வயல் நிலை",
     copyReply: "பதில் நகலெடு",
@@ -218,7 +231,15 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateSemiArid: "அரை வறண்ட",
     climateAridDesert: "வறண்ட பாலைவன",
     climateCoastalHumid: "கடற்கரை ஈரமான",
-    climateHighlandCool: "உயர்நில குளிர்ந்த"
+    climateHighlandCool: "உயர்நில குளிர்ந்த",
+    stockFertilizers: "உரங்கள் மற்றும் வேளாண் ரசாயனங்கள்",
+    stockSeeds: "விதைகள்",
+    stockMachinery: "வேளாண் இயந்திரங்கள்",
+    stockFoodProcessing: "உணவு செயலாக்கம்",
+    stockPlantations: "தோட்டங்கள்",
+    stockEdibleOils: "உண்ணக்கூடிய எண்ணெய்கள்",
+    newChat: "புதிய உரையாடல்",
+    chatHistory: "உரையாடல் வரலாறு"
   },
   hi: {
     appTitle: "AgroAI सहायक",
@@ -248,7 +269,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "वापस",
     searchCrop: "फसल का नाम खोजें",
     search: "खोजें",
-    dataNote: "कीमतें सार्वजनिक डेटा स्रोतों से ली जाती हैं और आंशिक हो सकती हैं।",
     smartInsights: "स्मार्ट इनसाइट्स",
     weatherBadge: "फील्ड कंडीशन",
     copyReply: "उत्तर कॉपी करें",
@@ -264,22 +284,30 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     delete: "Delete",
     completed: "Completed",
     welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic.",
-    soilAlluvial: "Alluvial Soil",
-    soilBlackCotton: "Black Cotton Soil",
-    soilRed: "Red Soil",
-    soilLaterite: "Laterite Soil",
-    soilSandy: "Sandy Soil",
-    soilLoamy: "Loamy Soil",
-    soilClay: "Clay Soil",
-    soilMountain: "Mountain Soil",
-    climateTropicalWet: "Tropical Wet",
-    climateTropicalDry: "Tropical Dry",
-    climateSubtropicalHumid: "Subtropical Humid",
-    climateTemperate: "Temperate",
-    climateSemiArid: "Semi-Arid",
-    climateAridDesert: "Arid Desert",
-    climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool"
+    soilAlluvial: "अलुवियल मिट्टी",
+    soilBlackCotton: "काली रत्ती मिट्टी",
+    soilRed: "लाल मिट्टी",
+    soilLaterite: "लेटेराइट मिट्टी",
+    soilSandy: "रेतीली मिट्टी",
+    soilLoamy: "लोमी मिट्टी",
+    soilClay: "चिकनी मिट्टी",
+    soilMountain: "पर्वतीय मिट्टी",
+    climateTropicalWet: "उष्णकटिबंधीय आर्द्र",
+    climateTropicalDry: "उष्णकटिबंधीय शुष्क",
+    climateSubtropicalHumid: "उप-उष्णकटिबंधीय आर्द्र",
+    climateTemperate: "समशीतोष्ण",
+    climateSemiArid: "अर्ध-शुष्क",
+    climateAridDesert: "शुष्क रेगिस्तान",
+    climateCoastalHumid: "तटीय आर्द्र",
+    climateHighlandCool: "पहाड़ी ठंडा",
+    stockFertilizers: "उर्वरक और कृषि रसायन",
+    stockSeeds: "बीज",
+    stockMachinery: "कृषि मशीनरी",
+    stockFoodProcessing: "खाद्य प्रसंस्करण",
+    stockPlantations: "बागान",
+    stockEdibleOils: "खाद्य तेल",
+    newChat: "नई चैट",
+    chatHistory: "चैट इतिहास"
   },
   gu: {
     appTitle: "AgroAI સહાયક",
@@ -309,7 +337,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "પાછા",
     searchCrop: "પાકનું નામ શોધો",
     search: "શોધો",
-    dataNote: "ભાવ જાહેર ડેટાસેટમાંથી લેવામાં આવે છે અને આંશિક હોઈ શકે છે.",
     smartInsights: "સ્માર્ટ ઇનસાઇટ્સ",
     weatherBadge: "ક્ષેત્ર સ્થિતિ",
     copyReply: "જવાબ નકલ કરો",
@@ -340,7 +367,15 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
     climateHighlandCool: "Highland Cool",
-    welcomeMessage: "હેલો! હું AgroAI છું, તમારો નિષ્ણાત કૃષિ સહાયક.\n\nઆજે હું તમને કેવી રીતે મદદ કરી શકું? પાક પસંદગી, માટી વ્યવસ્થાપન, જીવાત નિયંત્રણ, ઉત્પાદન ઑપ્ટિમાઇઝેશન અથવા કૃષિ સંબંધિત કોઈપણ અન્ય વિષયમાં મને પૂછો."
+    welcomeMessage: "હેલો! હું AgroAI છું, તમારો નિષ્ણાત કૃષિ સહાયક.\n\nઆજે હું તમને કેવી રીતે મદદ કરી શકું? પાક પસંદગી, માટી વ્યવસ્થાપન, જીવાત નિયંત્રણ, ઉત્પાદન ઑપ્ટિમાઇઝેશન અથવા કૃષિ સંબંધિત કોઈપણ અન્ય વિષયમાં મને પૂછો.",
+    stockFertilizers: "ખાતર અને કૃષિ રસાયણો",
+    stockSeeds: "બીજ",
+    stockMachinery: "કૃષિ મશીનરી",
+    stockFoodProcessing: "ખાદ્ય પ્રક્રિયા",
+    stockPlantations: "બાગાયત",
+    stockEdibleOils: "ખાદ્ય તેલ",
+    newChat: "નવી ચેટ",
+    chatHistory: "ચેટ ઇતિહાસ"
   },
   bn: {
     appTitle: "AgroAI সহায়ক",
@@ -370,7 +405,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "পিছনে",
     searchCrop: "ফসলের নাম অনুসন্ধান করুন",
     search: "অনুসন্ধান",
-    dataNote: "মূল্য সর্বজনীন ডেটাসেট থেকে নেওয়া হয় এবং আংশিক হতে পারে।",
     smartInsights: "স্মার্ট ইনসাইটস",
     weatherBadge: "ফিল্ড কন্ডিশন",
     copyReply: "উত্তর কপি করুন",
@@ -401,7 +435,15 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
     climateHighlandCool: "Highland Cool",
-    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
+    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic.",
+    stockFertilizers: "সার এবং কৃষি রাসায়নিক",
+    stockSeeds: "বীজ",
+    stockMachinery: "কৃষি যন্ত্রপাতি",
+    stockFoodProcessing: "খাদ্য প্রক্রিয়াকরণ",
+    stockPlantations: "বাগান",
+    stockEdibleOils: "খাদ্য তেল",
+    newChat: "নতুন চ্যাট",
+    chatHistory: "চ্যাট ইতিহাস"
   },
   mr: {
     appTitle: "AgroAI सहाय्यक",
@@ -431,7 +473,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "मागे",
     searchCrop: "पिकाचे नाव शोधा",
     search: "शोधा",
-    dataNote: "किंमती सार्वजनिक डेटासेटमधून घेतल्या जातात आणि अंशतः असू शकतात.",
     smartInsights: "स्मार्ट इनसाइट्स",
     weatherBadge: "फील्ड कंडिशन",
     copyReply: "उत्तर कॉपी करा",
@@ -462,6 +503,14 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
     climateHighlandCool: "Highland Cool",
+    stockFertilizers: "उर्वरक आणि कृषी रसायने",
+    stockSeeds: "बीजे",
+    stockMachinery: "कृषी यंत्रसामग्री",
+    stockFoodProcessing: "अन्न प्रक्रिया",
+    stockPlantations: "वनवाटिका",
+    stockEdibleOils: "खाद्य तेल",
+    newChat: "नवीन चॅट",
+    chatHistory: "चॅट इतिहास",
     welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   te: {
@@ -492,7 +541,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "వెనుకకు",
     searchCrop: "పంట పేరు వెతకండి",
     search: "వెతకండి",
-    dataNote: "ధరలు పబ్లిక్ డేటాసెట్‌ల నుండి తీసుకోబడతాయి మరియు అంశాలుగా ఉండవచ్చు.",
     smartInsights: "స్మార్ట్ ఇన్‌సైట్స్",
     weatherBadge: "ఫీల్డ్ కండిషన్",
     copyReply: "సమాధానం కాపీ చేయండి",
@@ -507,23 +555,31 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     addNote: "Add Note",
     delete: "Delete",
     completed: "Completed",
-    soilAlluvial: "Alluvial Soil",
-    soilBlackCotton: "Black Cotton Soil",
-    soilRed: "Red Soil",
-    soilLaterite: "Laterite Soil",
-    soilSandy: "Sandy Soil",
-    soilLoamy: "Loamy Soil",
-    soilClay: "Clay Soil",
-    soilMountain: "Mountain Soil",
-    climateTropicalWet: "Tropical Wet",
-    climateTropicalDry: "Tropical Dry",
-    climateSubtropicalHumid: "Subtropical Humid",
-    climateTemperate: "Temperate",
-    climateSemiArid: "Semi-Arid",
-    climateAridDesert: "Arid Desert",
-    climateCoastalHumid: "Coastal Humid",
-    climateHighlandCool: "Highland Cool",
-    welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
+    soilAlluvial: "અલ્લૂવિયલ માટી",
+    soilBlackCotton: "કાળા કોટન માટી",
+    soilRed: "લાલ માટી",
+    soilLaterite: "લેટેરાઇટ માટી",
+    soilSandy: "કણકણિયા માટી",
+    soilLoamy: "રાધ્ધુ માટી",
+    soilClay: "માટલી માટી",
+    soilMountain: "પર્વતીય માટી",
+    climateTropicalWet: "ઊષ્ણકટિબધી ભીંજ",
+    climateTropicalDry: "ઊષ્ણકટિબધી સૂકી",
+    climateSubtropicalHumid: "ઉપ-ઊષ્ણકટિબધી ભીંજ",
+    climateTemperate: "મધ્યમ",
+    climateSemiArid: "અર્ધ-શુષ્ક",
+    climateAridDesert: "શુષ્ક રણ",
+    climateCoastalHumid: "સારીખ ચરમાતી ભીંજ",
+    climateHighlandCool: "ઉચ્ચપ્રદેશ ઠંડક",
+    stockFertilizers: "ખાદ અને કૃષિ રાસાયણ",
+    stockSeeds: "વીઓ",
+    stockMachinery: "કૃષિ મશીનરી",
+    stockFoodProcessing: "ખોરાક પ્રોસેસિંગ",
+    stockPlantations: "પ્લાન્ટેશનો",
+    stockEdibleOils: "ખાદ્ય તેલ",
+    newChat: "નવੀਂ ચેટ",
+    chatHistory: "ચેટ ઇતિહાસ",
+    welcomeMessage: "હેલો! હું AgroAI છું, તમારો નિષ્ણાત કૃષિ સહાયક.\n\nઆજે હું તમને કેવી રીતે મદદ કરી શકું? કૃષિ પસંદગી, માટી મેનેજમેન્ટ, જીવાત નિયંત્રણ, ઉત્પાદન વધારવા અથવા કૃષિ સંબંધિત અન્ય કોઈપણ વિષય વિશે મને પૂછો."
   },
   ur: {
     appTitle: "AgroAI مددگار",
@@ -553,7 +609,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "پیچھے",
     searchCrop: "فصل کا نام تلاش کریں",
     search: "تلاش کریں",
-    dataNote: "قیمتیں پبلک ڈیٹا سیٹس سے لی جاتی ہیں اور جزوی ہو سکتی ہیں۔",
     smartInsights: "سمارٹ انسائٹس",
     weatherBadge: "فیلڈ کنڈیشن",
     copyReply: "جواب کاپی کریں",
@@ -584,6 +639,14 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
     climateHighlandCool: "Highland Cool",
+    stockFertilizers: "ఖరీఫ్ మరియు వ్యవసాయ రసాయనాలు",
+    stockSeeds: "విత్తనాలు",
+    stockMachinery: "వ్యవసాయ యంత్రాలు",
+    stockFoodProcessing: "ఆహార ప్రాసెసింగ్",
+    stockPlantations: "బావళి",
+    stockEdibleOils: "ఆహార నూనెలు",
+    newChat: "కొత్త చాట్",
+    chatHistory: "చాట్ చరిత్ర",
     welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   kn: {
@@ -614,7 +677,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "ಹಿಂತಿರುಗಿ",
     searchCrop: "ಬೆಳೆಯ ಹೆಸರನ್ನು ಹುಡುಕಿ",
     search: "ಹುಡುಕಿ",
-    dataNote: "ಬೆಲೆಗಳು ಸಾರ್ವಜನಿಕ ಡೇಟಾಸೆಟ್‌ಗಳಿಂದ ಪಡೆಯಲ್ಪಡುತ್ತವೆ ಮತ್ತು ಭಾಗಶಃ ಇರಬಹುದು.",
     smartInsights: "ಸ್ಮಾರ್ಟ್ ಇನ್‌ಸೈಟ್‌ಗಳು",
     weatherBadge: "ಫೀಲ್ಡ್ ಕಂಡಿಶನ್",
     copyReply: "ಉತ್ತರ ನಕಲಿಸಿ",
@@ -645,6 +707,14 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
     climateHighlandCool: "Highland Cool",
+    stockFertilizers: "ಸಾರ ಮತ್ತು ಕೃಷಿ ರಸಾಯನಗಳು",
+    stockSeeds: "ಬೀಜಗಳು",
+    stockMachinery: "ಕೃಷಿ ಯಂತ್ರೋಪಕರಣಗಳು",
+    stockFoodProcessing: "ಆಹಾರ ಪ್ರಕ್ರಿಯೆ",
+    stockPlantations: "ನಾಟಣೆಗಳನ್ನು",
+    stockEdibleOils: "ಉಂಡಿಗೆಯ ಎಣ್ಣೆಗಳು",
+    newChat: "ಹೊಸ ಚಾಟ್",
+    chatHistory: "ಚಾಟ್ ಇತಿಹಾಸ",
     welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   },
   or: {
@@ -675,7 +745,6 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     back: "ପଛକୁ",
     searchCrop: "ଫସଲ ନାମ ଖୋଜନ୍ତୁ",
     search: "ଖୋଜନ୍ତୁ",
-    dataNote: "ମୂଲ୍ୟ ପବ୍ଲିକ୍ ଡେଟାସେଟ୍‌ରୁ ନିଆଯାଇଛି ଏବଂ ଆଂଶିକ ହୋଇପାରେ।",
     smartInsights: "ସ୍ମାର୍ଟ୍ ଇନ୍‌ସାଇଟ୍‌ସ୍",
     weatherBadge: "ଫିଲ୍ଡ୍ କଣ୍ଡିଶନ୍",
     copyReply: "ଉତ୍ତର କପି କରନ୍ତୁ",
@@ -706,42 +775,166 @@ export const dictionaries: Record<LanguageCode, TranslationDictionary> = {
     climateAridDesert: "Arid Desert",
     climateCoastalHumid: "Coastal Humid",
     climateHighlandCool: "Highland Cool",
+    stockFertilizers: "ସାର ଏବଂ କୃଷି ରାସାୟଣ",
+    stockSeeds: "ବୀଜ",
+    stockMachinery: "କୃଷି ଯନ୍ତ୍ରପାତି",
+    stockFoodProcessing: "ଖାଦ୍ୟ ପ୍ରକ୍ରିୟା",
+    stockPlantations: "ଚାଷବାଡ଼ି",
+    stockEdibleOils: "ଖାଦ୍ୟ ତେଲ",
+    newChat: "ନୂତନ ଚାଟ୍",
+    chatHistory: "ଚାଟ୍ ଇତିହାସ",
     welcomeMessage: "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic."
   }
 };
 
-export const quickPrompts = [
-  [
-    "Best crop recommendation for winter in black soil?",
-    "How can I reduce pest attacks in chilli cultivation?",
-    "Suggest irrigation timing for a semi-arid climate.",
-    "What nutrients are usually low in sandy soils?"
+export const quickPromptsByLanguage: Record<LanguageCode, string[][]> = {
+  en: [
+    [
+      "Best crop recommendation for winter in black soil?",
+      "How can I reduce pest attacks in chilli cultivation?",
+      "Suggest irrigation timing for a semi-arid climate.",
+      "What nutrients are usually low in sandy soils?"
+    ],
+    [
+      "How to improve soil fertility naturally?",
+      "Best practices for organic farming?",
+      "What are the signs of nutrient deficiency in plants?",
+      "How to protect crops from extreme weather?"
+    ],
+    [
+      "Recommended fertilizers for paddy cultivation?",
+      "How to manage weed control effectively?",
+      "What are the benefits of crop rotation?",
+      "How to identify and treat fungal diseases?"
+    ],
+    [
+      "Best irrigation methods for water conservation?",
+      "How to increase yield in maize farming?",
+      "What are the common pests in vegetable farming?",
+      "How to prepare soil for planting?"
+    ],
+    [
+      "Sustainable farming techniques for small farms?",
+      "How to store grains to prevent spoilage?",
+      "What are the market trends for organic produce?",
+      "How to implement integrated pest management?"
+    ]
   ],
-  [
-    "How to improve soil fertility naturally?",
-    "Best practices for organic farming?",
-    "What are the signs of nutrient deficiency in plants?",
-    "How to protect crops from extreme weather?"
+  ta: [
+    [
+      "கருப்பு மண்ணில் குளிர்காலத்திற்கு சிறந்த பயிர் யார்?",
+      "மிளகாய் பயிரில் பூச்சி தாக்கங்களை எப்படி குறைப்பது?",
+      "அரை வறண்ட காலநிலைக்கான நீர்வழம் நேரத்தை பரிந்துரை செய்க.",
+      "மணல் மண்ணில் பொதுவாக எந்த ஊட்டச்சத்துக்கள் குறைவாக இருக்கும்?"
+    ],
+    [
+      "மணலின் சாந்தியை இயல்பாக எப்படி மேம்படுத்துவது?",
+      "ஆர்கானிக் வேளாண்மைக்கு சிறந்த நடைமுறைகள்?",
+      "தாவரங்களில் ஊட்டச்சத்து குறைவு அறிகுறிகள் என்ன?",
+      "அதிக வானிலை மாற்றத்தால் பயிர்களை எப்படி பாதுகாக்கலாம்?"
+    ],
+    [
+      "நெல் பயிர்க்கான பரிந்துரைக்கப்பட்ட உரங்கள் எவை?",
+      "புல் கட்டுப்பாட்டை எவ்வாறு திறம்பட நிர்வகிப்பது?",
+      "பயிர் சுற்றுமுறை பயன்கள் என்ன?",
+      "பூஞ்சை நோய்களை எவ்வாறு கண்டறிந்து சிகிச்சை செய்ய வேண்டும்?"
+    ],
+    [
+      "நீர் சேமிப்பிற்கான சிறந்த நீர்சேமிப்பு முறைகள் என்ன?",
+      "மக்காச்சோளம் பயிரில் விளைச்சலை எப்படி அதிகரிப்பது?",
+      "காய்கறி வேளாண்மையில் பொதுவான பூச்சிகள் யாவை?",
+      "நடுவிடை நடுவர்த்தனைதிற்கான மண்ணை எப்படி தயார் செய்வது?"
+    ],
+    [
+      "சிறிய பண்ணைகளுக்கு پایொருந்தக்கூடிய வேளாண்மைத்தொழில்நுட்பங்கள்?",
+      "ஆபத்தைத் தவிர்க்க மக்காச்சோளம் எவ்வாறு சேமிப்பது?",
+      "ஆர்கானிக் உற்பத்திக்கான சந்தை போக்குகள் என்ன?",
+      "இணைக்கப்பட்ட பூச்சி மேலாண்மையை எவ்வாறு செயல்படுத்துவது?"
+    ]
   ],
-  [
-    "Recommended fertilizers for paddy cultivation?",
-    "How to manage weed control effectively?",
-    "What are the benefits of crop rotation?",
-    "How to identify and treat fungal diseases?"
+  hi: [
+    [
+      "काले मिट्टी में सर्दियों के लिए सर्वोत्तम फसल कौन सी है?",
+      "मिर्च की खेती में कीट हमलों को कैसे कम कर सकता हूँ?",
+      "अर्ध-शुष्क जलवायु के लिए सिंचाई समय सुझाएँ।",
+      "रेतीली मिट्टी में आमतौर पर कौन से पोषक तत्व कम होते हैं?"
+    ],
+    [
+      "मिट्टी की उर्वरता को प्राकृतिक रूप से कैसे सुधारें?",
+      "जैविक खेती के लिए सर्वोत्तम अभ्यास?",
+      "पौधों में पोषक तत्व की कमी के संकेत क्या हैं?",
+      "कड़ी जलवायु स्थितियों से फसलों की रक्षा कैसे करें?"
+    ],
+    [
+      "धान की खेती के लिए अनुशंसित उर्वरक कौन से हैं?",
+      "घास नियंत्रण को प्रभावी ढंग से कैसे प्रबंधित करें?",
+      "फसल चक्र के लाभ क्या हैं?",
+      "फफूंद रोग की पहचान और उपचार कैसे करें?"
+    ],
+    [
+      "जल संरक्षण के लिए सर्वोत्तम सिंचाई विधियाँ?",
+      "मक्का की खेती में पैदावार कैसे बढ़ाएं?",
+      "सब्जी खेती में सामान्य कीट कौन से हैं?",
+      "रोपण के लिए मिट्टी को कैसे तैयार करें?"
+    ],
+    [
+      "छोटी फार्मों के लिए टिकाऊ खेती तकनीक?",
+      "अक्षय खराबी से बचाने के लिए अनाज कैसे स्टोर करें?",
+      "जैविक उत्पाद के लिए बाजार प्रवृत्तियाँ क्या हैं?",
+      "एकीकृत कीट प्रबंधन को कैसे लागू करें?"
+    ]
   ],
-  [
-    "Best irrigation methods for water conservation?",
-    "How to increase yield in maize farming?",
-    "What are the common pests in vegetable farming?",
-    "How to prepare soil for planting?"
+  // fallback to English for other languages so the structure is complete
+  bn: [
+    ["Best crop recommendation for winter in black soil?", "How can I reduce pest attacks in chilli cultivation?", "Suggest irrigation timing for a semi-arid climate.", "What nutrients are usually low in sandy soils?"],
+    ["How to improve soil fertility naturally?", "Best practices for organic farming?", "What are the signs of nutrient deficiency in plants?", "How to protect crops from extreme weather?"],
+    ["Recommended fertilizers for paddy cultivation?", "How to manage weed control effectively?", "What are the benefits of crop rotation?", "How to identify and treat fungal diseases?"],
+    ["Best irrigation methods for water conservation?", "How to increase yield in maize farming?", "What are the common pests in vegetable farming?", "How to prepare soil for planting?"],
+    ["Sustainable farming techniques for small farms?", "How to store grains to prevent spoilage?", "What are the market trends for organic produce?", "How to implement integrated pest management?"]
   ],
-  [
-    "Sustainable farming techniques for small farms?",
-    "How to store grains to prevent spoilage?",
-    "What are the market trends for organic produce?",
-    "How to implement integrated pest management?"
+  mr: [
+    ["Best crop recommendation for winter in black soil?", "How can I reduce pest attacks in chilli cultivation?", "Suggest irrigation timing for a semi-arid climate.", "What nutrients are usually low in sandy soils?"],
+    ["How to improve soil fertility naturally?", "Best practices for organic farming?", "What are the signs of nutrient deficiency in plants?", "How to protect crops from extreme weather?"],
+    ["Recommended fertilizers for paddy cultivation?", "How to manage weed control effectively?", "What are the benefits of crop rotation?", "How to identify and treat fungal diseases?"],
+    ["Best irrigation methods for water conservation?", "How to increase yield in maize farming?", "What are the common pests in vegetable farming?", "How to prepare soil for planting?"],
+    ["Sustainable farming techniques for small farms?", "How to store grains to prevent spoilage?", "What are the market trends for organic produce?", "How to implement integrated pest management?"]
+  ],
+  te: [
+    ["Best crop recommendation for winter in black soil?", "How can I reduce pest attacks in chilli cultivation?", "Suggest irrigation timing for a semi-arid climate.", "What nutrients are usually low in sandy soils?"],
+    ["How to improve soil fertility naturally?", "Best practices for organic farming?", "What are the signs of nutrient deficiency in plants?", "How to protect crops from extreme weather?"],
+    ["Recommended fertilizers for paddy cultivation?", "How to manage weed control effectively?", "What are the benefits of crop rotation?", "How to identify and treat fungal diseases?"],
+    ["Best irrigation methods for water conservation?", "How to increase yield in maize farming?", "What are the common pests in vegetable farming?", "How to prepare soil for planting?"],
+    ["Sustainable farming techniques for small farms?", "How to store grains to prevent spoilage?", "What are the market trends for organic produce?", "How to implement integrated pest management?"]
+  ],
+  gu: [
+    ["Best crop recommendation for winter in black soil?", "How can I reduce pest attacks in chilli cultivation?", "Suggest irrigation timing for a semi-arid climate.", "What nutrients are usually low in sandy soils?"],
+    ["How to improve soil fertility naturally?", "Best practices for organic farming?", "What are the signs of nutrient deficiency in plants?", "How to protect crops from extreme weather?"],
+    ["Recommended fertilizers for paddy cultivation?", "How to manage weed control effectively?", "What are the benefits of crop rotation?", "How to identify and treat fungal diseases?"],
+    ["Best irrigation methods for water conservation?", "How to increase yield in maize farming?", "What are the common pests in vegetable farming?", "How to prepare soil for planting?"],
+    ["Sustainable farming techniques for small farms?", "How to store grains to prevent spoilage?", "What are the market trends for organic produce?", "How to implement integrated pest management?"]
+  ],
+  ur: [
+    ["Best crop recommendation for winter in black soil?", "How can I reduce pest attacks in chilli cultivation?", "Suggest irrigation timing for a semi-arid climate.", "What nutrients are usually low in sandy soils?"],
+    ["How to improve soil fertility naturally?", "Best practices for organic farming?", "What are the signs of nutrient deficiency in plants?", "How to protect crops from extreme weather?"],
+    ["Recommended fertilizers for paddy cultivation?", "How to manage weed control effectively?", "What are the benefits of crop rotation?", "How to identify and treat fungal diseases?"],
+    ["Best irrigation methods for water conservation?", "How to increase yield in maize farming?", "What are the common pests in vegetable farming?", "How to prepare soil for planting?"],
+    ["Sustainable farming techniques for small farms?", "How to store grains to prevent spoilage?", "What are the market trends for organic produce?", "How to implement integrated pest management?"]
+  ],
+  kn: [
+    ["Best crop recommendation for winter in black soil?", "How can I reduce pest attacks in chilli cultivation?", "Suggest irrigation timing for a semi-arid climate.", "What nutrients are usually low in sandy soils?"],
+    ["How to improve soil fertility naturally?", "Best practices for organic farming?", "What are the signs of nutrient deficiency in plants?", "How to protect crops from extreme weather?"],
+    ["Recommended fertilizers for paddy cultivation?", "How to manage weed control effectively?", "What are the benefits of crop rotation?", "How to identify and treat fungal diseases?"],
+    ["Best irrigation methods for water conservation?", "How to increase yield in maize farming?", "What are the common pests in vegetable farming?", "How to prepare soil for planting?"],
+    ["Sustainable farming techniques for small farms?", "How to store grains to prevent spoilage?", "What are the market trends for organic produce?", "How to implement integrated pest management?"]
+  ],
+  or: [
+    ["Best crop recommendation for winter in black soil?", "How can I reduce pest attacks in chilli cultivation?", "Suggest irrigation timing for a semi-arid climate.", "What nutrients are usually low in sandy soils?"],
+    ["How to improve soil fertility naturally?", "Best practices for organic farming?", "What are the signs of nutrient deficiency in plants?", "How to protect crops from extreme weather?"],
+    ["Recommended fertilizers for paddy cultivation?", "How to manage weed control effectively?", "What are the benefits of crop rotation?", "How to identify and treat fungal diseases?"],
+    ["Best irrigation methods for water conservation?", "How to increase yield in maize farming?", "What are the common pests in vegetable farming?", "How to prepare soil for planting?"],
+    ["Sustainable farming techniques for small farms?", "How to store grains to prevent spoilage?", "What are the market trends for organic produce?", "How to implement integrated pest management?"]
   ]
-];
+};
 
 export const advisoryChecklist = [
   "Check soil moisture before irrigation.",

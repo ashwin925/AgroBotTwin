@@ -7,7 +7,7 @@ import {
   climateTypes,
   dictionaries,
   languages,
-  quickPrompts,
+  quickPromptsByLanguage,
   soilTypes,
   type LanguageCode
 } from "@/data/agro";
@@ -33,6 +33,13 @@ export function AgroDashboard() {
   const [isPending, setIsPending] = useState(false);
   const [copiedId, setCopiedId] = useState("");
   const [currentPromptSet, setCurrentPromptSet] = useState(0);
+  const [chatHistory, setChatHistory] = useState<{
+    id: string;
+    title: string;
+    messages: Message[];
+    savedAt: string;
+  }[]>([]);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [checklist, setChecklist] = useState<{ id: string; text: string; completed: boolean }[]>([]);
   const [newTask, setNewTask] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -46,18 +53,21 @@ export function AgroDashboard() {
   });
 
   const labels = dictionaries[language];
+  const quickPromptsForLanguage = quickPromptsByLanguage[language] || quickPromptsByLanguage.en;
 
-  const initialMessage = useMemo((): Message => ({
+  const createInitialMessage = (lang: LanguageCode): Message => ({
     id: "welcome",
     role: "assistant",
-    content: labels.welcomeMessage || "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic.",
+    content:
+      dictionaries[lang].welcomeMessage ||
+      "Hello! I am AgroAI, your expert agricultural assistant.\n\nHow can I help you today? Please feel free to ask me anything about crop selection, soil management, pest control, yield optimization, or any other farming-related topic.",
     createdAt: new Date().toISOString()
-  }), [labels]);
+  });
 
   useEffect(() => {
     const raw = localStorage.getItem(storageKey);
     if (!raw) {
-      setMessages([initialMessage]);
+      setMessages([createInitialMessage(language)]);
       return;
     }
 
@@ -68,7 +78,10 @@ export function AgroDashboard() {
         climateType?: string;
         messages?: Message[];
         checklist?: { id: string; text: string; completed: boolean }[];
+        chatHistory?: { id: string; title: string; messages: Message[]; savedAt: string }[];
       };
+
+      const loadedLanguage = parsed.language && dictionaries[parsed.language] ? parsed.language : language;
 
       if (parsed.language && dictionaries[parsed.language]) {
         setLanguage(parsed.language);
@@ -82,10 +95,13 @@ export function AgroDashboard() {
       if (parsed.messages?.length) {
         setMessages(parsed.messages);
       } else {
-        setMessages([initialMessage]);
+        setMessages([createInitialMessage(loadedLanguage)]);
       }
       if (parsed.checklist) {
         setChecklist(parsed.checklist);
+      }
+      if (parsed.chatHistory) {
+        setChatHistory(parsed.chatHistory);
       }
     } catch {
       localStorage.removeItem(storageKey);
@@ -95,9 +111,9 @@ export function AgroDashboard() {
   useEffect(() => {
     localStorage.setItem(
       storageKey,
-      JSON.stringify({ language, soilType, climateType, messages, checklist })
+      JSON.stringify({ language, soilType, climateType, messages, checklist, chatHistory })
     );
-  }, [language, soilType, climateType, messages, checklist]);
+  }, [language, soilType, climateType, messages, checklist, chatHistory]);
 
   useEffect(() => {
     setStockPrices({
@@ -133,14 +149,23 @@ export function AgroDashboard() {
     setQuestion("");
     setIsPending(true);
 
+    const selectedSoilType = soilType
+      ? soilTypes.find((item) => item.id === soilType)?.labelKey
+      : undefined;
+    const selectedClimateType = climateType
+      ? climateTypes.find((item) => item.id === climateType)?.labelKey
+      : undefined;
+    const requestSoilType = selectedSoilType ? labels[selectedSoilType as keyof typeof labels] : undefined;
+    const requestClimateType = selectedClimateType ? labels[selectedClimateType as keyof typeof labels] : undefined;
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           question: activeQuestion,
-          soilType,
-          climateType,
+          soilType: requestSoilType,
+          climateType: requestClimateType,
           language,
           messages: nextMessages.map(({ role, content }) => ({ role, content }))
         })
@@ -185,7 +210,41 @@ export function AgroDashboard() {
   }
 
   function clearHistory() {
-    setMessages([initialMessage]);
+    setMessages([createInitialMessage(language)]);
+  }
+
+  function startNewChat() {
+    if (messages.length > 1) {
+      const title = messages.find((msg) => msg.role === "user")?.content.slice(0, 70) || "AgroAI chat";
+      const newHistory = [
+        {
+          id: crypto.randomUUID(),
+          title,
+          messages,
+          savedAt: new Date().toISOString()
+        },
+        ...chatHistory
+      ].slice(0, 5);
+      setChatHistory(newHistory);
+    }
+    setMessages([createInitialMessage(language)]);
+    setSoilType("");
+    setClimateType("");
+    setQuestion("");
+    setIsHistoryOpen(false);
+  }
+
+  function openChatHistory() {
+    setIsHistoryOpen((prev) => !prev);
+  }
+
+  function loadHistory(threadId: string) {
+    const thread = chatHistory.find((item) => item.id === threadId);
+    if (!thread) {
+      return;
+    }
+    setMessages(thread.messages);
+    setIsHistoryOpen(false);
   }
 
   async function logout() {
@@ -234,7 +293,8 @@ export function AgroDashboard() {
   }
 
   function refreshPrompts() {
-    setCurrentPromptSet(Math.floor(Math.random() * quickPrompts.length));
+    const promptSetCount = quickPromptsForLanguage.length || quickPromptsByLanguage.en.length;
+    setCurrentPromptSet(Math.floor(Math.random() * promptSetCount));
   }
 
   function addTask() {
@@ -298,14 +358,11 @@ export function AgroDashboard() {
             <div className="stack">
               <select className="field" value={soilType} onChange={(event) => setSoilType(event.target.value)}>
                 <option value="">{labels.selectSoilType}</option>
-                <option value="Alluvial Soil">{labels.soilAlluvial}</option>
-                <option value="Black Cotton Soil">{labels.soilBlackCotton}</option>
-                <option value="Red Soil">{labels.soilRed}</option>
-                <option value="Laterite Soil">{labels.soilLaterite}</option>
-                <option value="Sandy Soil">{labels.soilSandy}</option>
-                <option value="Loamy Soil">{labels.soilLoamy}</option>
-                <option value="Clay Soil">{labels.soilClay}</option>
-                <option value="Mountain Soil">{labels.soilMountain}</option>
+                {soilTypes.map((type) => (
+                  <option key={type.id} value={type.id}>
+                    {labels[type.labelKey as keyof typeof labels]}
+                  </option>
+                ))}
               </select>
 
               <select
@@ -314,14 +371,11 @@ export function AgroDashboard() {
                 onChange={(event) => setClimateType(event.target.value)}
               >
                 <option value="">{labels.selectClimateType}</option>
-                <option value="Tropical Wet">{labels.climateTropicalWet}</option>
-                <option value="Tropical Dry">{labels.climateTropicalDry}</option>
-                <option value="Subtropical Humid">{labels.climateSubtropicalHumid}</option>
-                <option value="Temperate">{labels.climateTemperate}</option>
-                <option value="Semi-Arid">{labels.climateSemiArid}</option>
-                <option value="Arid Desert">{labels.climateAridDesert}</option>
-                <option value="Coastal Humid">{labels.climateCoastalHumid}</option>
-                <option value="Highland Cool">{labels.climateHighlandCool}</option>
+                {climateTypes.map((type) => (
+                  <option key={type.id} value={type.id}>
+                    {labels[type.labelKey as keyof typeof labels]}
+                  </option>
+                ))}
               </select>
 
               <textarea
@@ -343,7 +397,7 @@ export function AgroDashboard() {
                   </button>
                 </div>
                 <div className="chip-row">
-                  {quickPrompts[currentPromptSet].map((prompt) => (
+                  {quickPromptsForLanguage[currentPromptSet].map((prompt) => (
                     <button
                       key={prompt}
                       className="chip"
@@ -398,13 +452,32 @@ export function AgroDashboard() {
               <div className="insight-card">
                 <h3>{labels.questionsAsked}</h3>
                 <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                  <button className="button" onClick={() => setMessages([initialMessage])} style={{ flex: 1 }}>
-                    New Chat
+                  <button className="button" onClick={startNewChat} style={{ flex: 1 }}>
+                    {labels.newChat}
                   </button>
-                  <button className="button" onClick={() => {/* TODO: show history */ }} style={{ flex: 1 }}>
-                    Chat History
+                  <button className="button" onClick={openChatHistory} style={{ flex: 1 }}>
+                    {labels.chatHistory}
                   </button>
                 </div>
+                {isHistoryOpen && (
+                  <div style={{ marginBottom: "0.5rem", background: "#f6f6f6", padding: "0.6rem", borderRadius: "8px" }}>
+                    {chatHistory.length === 0 ? (
+                      <p className="subtle">No saved chat history yet.</p>
+                    ) : (
+                      chatHistory.map((thread) => (
+                        <button
+                          key={thread.id}
+                          className="button"
+                          type="button"
+                          onClick={() => loadHistory(thread.id)}
+                          style={{ width: "100%", marginBottom: "0.25rem", textAlign: "left" }}
+                        >
+                          {thread.title} - {formatDateTime(thread.savedAt, language)}
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
                 {questionsAsked.map((message) => (
                   <p
                     key={message.id}
@@ -426,12 +499,12 @@ export function AgroDashboard() {
                   </button>
                 </div>
                 <div style={{ display: "grid", gap: "0.5rem" }}>
-                  <div>Fertilisers and Agrochemicals: ₹{stockPrices.fertilizers}</div>
-                  <div>Seeds: ₹{stockPrices.seeds}</div>
-                  <div>Agricultural Machinery: ₹{stockPrices.machinery}</div>
-                  <div>Food Processing: ₹{stockPrices.foodProcessing}</div>
-                  <div>Plantations: ₹{stockPrices.plantations}</div>
-                  <div>Edible Oils: ₹{stockPrices.edibleOils}</div>
+                  <div>{labels.stockFertilizers}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.fertilizers)}</div>
+                  <div>{labels.stockSeeds}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.seeds)}</div>
+                  <div>{labels.stockMachinery}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.machinery)}</div>
+                  <div>{labels.stockFoodProcessing}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.foodProcessing)}</div>
+                  <div>{labels.stockPlantations}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.plantations)}</div>
+                  <div>{labels.stockEdibleOils}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.edibleOils)}</div>
                 </div>
               </div>
             </div>
@@ -442,7 +515,7 @@ export function AgroDashboard() {
               {messages.map((message) => (
                 <article key={message.id} id={`message-${message.id}`} className={`message ${message.role}`}>
                   <p>{message.content}</p>
-                  <time suppressHydrationWarning>{formatDateTime(message.createdAt)}</time>
+                  <time suppressHydrationWarning>{formatDateTime(message.createdAt, language)}</time>
                   {message.role === "assistant" ? (
                     <div className="reply-tools">
                       <button type="button" onClick={() => void copyReply(message)}>
