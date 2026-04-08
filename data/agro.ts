@@ -1135,7 +1135,7 @@ export const marketFallback: Record<
   wheat: {
     crop: "Wheat",
     msp: "Rs. 2425/quintal",
-    price: "Rs. 24.25/kg",
+    price: "Rs. 24.90/kg",
     shortDescription: "Staple cereal grain widely used in flour, breads, and rotis.",
     healthBenefits: "Rich in fiber and plant protein; supports digestion and energy.",
     calories: "3.4 kcal/g",
@@ -1146,18 +1146,18 @@ export const marketFallback: Record<
   rice: {
     crop: "Rice",
     msp: "Rs. 2300/quintal",
-    price: "Rs. 25.80/kg",
+    price: "Rs. 26.40/kg",
     shortDescription: "Primary staple grain with broad consumer demand across India.",
     healthBenefits: "Good carbohydrate source with easy digestibility.",
     calories: "3.6 kcal/g",
-    arrivals: "Moderate arrivals",
+    arrivals: "Moderate to steady arrivals",
     quality: "Premium demand for clean, uniform grain",
     trend: "Firm seasonal demand"
   },
   tomato: {
     crop: "Tomato",
     msp: "Not applicable",
-    price: "Rs. 18.00/kg",
+    price: "Rs. 22.00/kg",
     shortDescription: "Popular vegetable crop used fresh and in processed foods.",
     healthBenefits: "Contains lycopene, vitamin C, and antioxidants.",
     calories: "0.18 kcal/g",
@@ -1167,8 +1167,8 @@ export const marketFallback: Record<
   },
   maize: {
     crop: "Maize",
-    msp: "Rs. 2025/quintal",
-    price: "Rs. 20.25/kg",
+    msp: "Rs. 2225/quintal",
+    price: "Rs. 23.50/kg",
     shortDescription: "Versatile grain used for food, feed, and industrial purposes.",
     healthBenefits: "Rich in carbohydrates and provides essential vitamins.",
     calories: "3.6 kcal/g",
@@ -1212,7 +1212,7 @@ export const marketFallback: Record<
   groundnut: {
     crop: "Groundnut",
     msp: "Rs. 6897/quintal",
-    price: "Rs. 68.97/kg",
+    price: "Rs. 71.20/kg",
     shortDescription: "Oilseed crop with edible nuts and oil.",
     healthBenefits: "Rich in healthy fats, protein, and vitamins.",
     calories: "5.6 kcal/g",
@@ -1223,7 +1223,7 @@ export const marketFallback: Record<
   soybean: {
     crop: "Soybean",
     msp: "Rs. 4600/quintal",
-    price: "Rs. 46.00/kg",
+    price: "Rs. 48.40/kg",
     shortDescription: "High-protein oilseed used for food and feed.",
     healthBenefits: "Complete protein source with essential amino acids.",
     calories: "4.5 kcal/g",

@@ -49,7 +49,9 @@ export function AgroDashboard() {
     machinery: 0,
     foodProcessing: 0,
     plantations: 0,
-    edibleOils: 0
+    edibleOils: 0,
+    updatedAt: "",
+    source: ""
   });
 
   const labels = dictionaries[language];
@@ -67,7 +69,7 @@ export function AgroDashboard() {
   useEffect(() => {
     const raw = localStorage.getItem(storageKey);
     if (!raw) {
-      setMessages([createInitialMessage(language)]);
+      setMessages([createInitialMessage("en")]);
       return;
     }
 
@@ -81,7 +83,7 @@ export function AgroDashboard() {
         chatHistory?: { id: string; title: string; messages: Message[]; savedAt: string }[];
       };
 
-      const loadedLanguage = parsed.language && dictionaries[parsed.language] ? parsed.language : language;
+      const loadedLanguage = parsed.language && dictionaries[parsed.language] ? parsed.language : "en";
 
       if (parsed.language && dictionaries[parsed.language]) {
         setLanguage(parsed.language);
@@ -116,14 +118,29 @@ export function AgroDashboard() {
   }, [language, soilType, climateType, messages, checklist, chatHistory]);
 
   useEffect(() => {
-    setStockPrices({
-      fertilizers: Math.floor(Math.random() * 1000) + 500,
-      seeds: Math.floor(Math.random() * 800) + 300,
-      machinery: Math.floor(Math.random() * 1500) + 1000,
-      foodProcessing: Math.floor(Math.random() * 1200) + 700,
-      plantations: Math.floor(Math.random() * 900) + 400,
-      edibleOils: Math.floor(Math.random() * 600) + 200
-    });
+    void (async () => {
+      try {
+        const response = await fetch("/api/stocks");
+        if (!response.ok) {
+          return;
+        }
+
+        const payload = (await response.json()) as {
+          fertilizers: number;
+          seeds: number;
+          machinery: number;
+          foodProcessing: number;
+          plantations: number;
+          edibleOils: number;
+          updatedAt: string;
+          source: string;
+        };
+
+        setStockPrices(payload);
+      } catch {
+        // Keep the default values if the stock board cannot be loaded.
+      }
+    })();
   }, []);
 
   const questionsAsked = useMemo(
@@ -505,6 +522,16 @@ export function AgroDashboard() {
                   <div>{labels.stockFoodProcessing}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.foodProcessing)}</div>
                   <div>{labels.stockPlantations}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.plantations)}</div>
                   <div>{labels.stockEdibleOils}: {new Intl.NumberFormat(language, { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(stockPrices.edibleOils)}</div>
+                  {stockPrices.updatedAt ? (
+                    <div className="subtle" style={{ marginTop: "0.5rem", fontSize: "0.9rem" }}>
+                      Updated: {formatDateTime(stockPrices.updatedAt, language)}
+                    </div>
+                  ) : null}
+                  {stockPrices.source ? (
+                    <div className="subtle" style={{ fontSize: "0.9rem" }}>
+                      {stockPrices.source}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </div>

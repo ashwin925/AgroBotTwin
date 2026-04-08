@@ -58,14 +58,3 @@ export async function requireSession() {
   }
   return session;
 }
-
-export function validateLogin(email: string, password: string) {
-  const allowedEmail = process.env.APP_LOGIN_EMAIL;
-  const allowedPassword = process.env.APP_LOGIN_PASSWORD;
-
-  if (!allowedEmail || !allowedPassword) {
-    throw new Error("APP_LOGIN_EMAIL and APP_LOGIN_PASSWORD must be configured.");
-  }
-
-  return email === allowedEmail && password === allowedPassword;
-}
